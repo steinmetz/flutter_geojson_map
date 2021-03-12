@@ -16,8 +16,8 @@ abstract class MapState extends Equatable {
 }
 
 class MapLoaded extends MapState {
-  MapLoaded(
-    String content, {
+  MapLoaded({
+    String content,
     EditingMode editingMode: EditingMode.none,
     Set<PointMarker> pointMarkers = const {},
   }) : super(
