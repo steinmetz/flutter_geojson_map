@@ -1,11 +1,16 @@
 import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_geojson_map/domain/entities/point_marker.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:latlong/latlong.dart';
 
 class MapWidget extends StatefulWidget {
-
-  MapWidget({Key key}) : super(key: key);
+  final Set<PointMarker> pointMarkers;
+  final Function(double, double) onTap;
+  MapWidget({Key key, this.onTap, this.pointMarkers = const {}})
+      : super(key: key);
 
   @override
   _MapWidgetState createState() => _MapWidgetState();
@@ -29,21 +34,32 @@ class _MapWidgetState extends State<MapWidget> {
       child: FlutterMap(
         mapController: mapController,
         options: MapOptions(
+          onTap: (latLng) {
+            if (widget.onTap != null) {
+              widget.onTap(latLng.latitude, latLng.longitude);
+            }
+          },
           allowPanning: true,
-          center: LatLng(51.5, -0.09),
+          center: LatLng(50.03, 8.73),
           zoom: 13.0,
         ),
         layers: [
           MarkerLayerOptions(
             markers: [
-              // Marker(
-              //   width: 80.0,
-              //   height: 80.0,
-              //   point: LatLng(51.5, -0.09),
-              //   builder: (ctx) => Container(
-              //     child: FlutterLogo(),
-              //   ),
-              // ),
+              for (final marker in widget.pointMarkers)
+                Marker(
+                  anchorPos: AnchorPos.align(AnchorAlign.top),
+                  point: LatLng(marker.latitude, marker.longitude),
+                  builder: (ctx) => GestureDetector(
+                    onTap: () => marker.onTap(marker.id),
+                    child: Center(
+                      child: FaIcon(
+                        FontAwesomeIcons.mapMarker,
+                        color: Colors.blue,
+                      ),
+                    ),
+                  ),
+                ),
             ],
           ),
         ],
@@ -53,20 +69,6 @@ class _MapWidgetState extends State<MapWidget> {
                   urlTemplate:
                       "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
                   subdomains: ['a', 'b', 'c'])),
-          MarkerLayerWidget(
-            options: MarkerLayerOptions(
-              markers: [
-                // Marker(
-                //   width: 80.0,
-                //   height: 80.0,
-                //   point: LatLng(51.5, -0.09),
-                //   builder: (ctx) => Container(
-                //     child: FlutterLogo(),
-                //   ),
-                // ),
-              ],
-            ),
-          ),
         ],
       ),
     );

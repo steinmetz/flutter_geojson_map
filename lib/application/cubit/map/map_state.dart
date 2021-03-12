@@ -10,13 +10,21 @@ enum EditingMode {
 abstract class MapState extends Equatable {
   final String content;
   final EditingMode editingMode;
+  final Set<PointMarker> pointMarkers;
 
-  MapState(this.content, this.editingMode);
+  MapState({this.content, this.editingMode, this.pointMarkers});
 }
 
 class MapLoaded extends MapState {
-  MapLoaded(String content, {EditingMode editingMode: EditingMode.none})
-      : super(content, editingMode);
+  MapLoaded(
+    String content, {
+    EditingMode editingMode: EditingMode.none,
+    Set<PointMarker> pointMarkers = const {},
+  }) : super(
+          content: content,
+          editingMode: editingMode,
+          pointMarkers: pointMarkers,
+        );
 
   @override
   List<Object> get props => [content, editingMode];

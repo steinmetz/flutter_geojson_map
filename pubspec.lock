@@ -116,13 +116,22 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  font_awesome_flutter:
+    dependency: "direct main"
+    description:
+      name: font_awesome_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "8.12.0"
   geojson_vi:
     dependency: "direct main"
     description:
-      name: geojson_vi
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.0"
+      path: "."
+      ref: HEAD
+      resolved-ref: e640d9a9d236f5e84e8757218af0244aca87ec51
+      url: "https://github.com/steinmetz/geojson_vi"
+    source: git
+    version: "2.0.1+1"
   intl:
     dependency: transitive
     description:

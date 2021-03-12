@@ -7,21 +7,19 @@ class DataPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        children: [
-          Text(
-            'Demo of the GeoJson library geojson_vi',
-            style: Theme.of(context).textTheme.subtitle1,
+    return ListView(
+      children: [
+        Text(
+          'Demo of the GeoJson library geojson_vi',
+          style: Theme.of(context).textTheme.subtitle1,
+        ),
+        Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: SelectableText(
+            content ?? '',
           ),
-          Expanded(
-            child:Text(content ?? '',
-            textAlign: TextAlign.center,
-            ),
-          )
-        ],
-      ),
+        )
+      ],
     );
   }
 }
