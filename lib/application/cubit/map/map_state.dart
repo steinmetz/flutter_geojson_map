@@ -12,13 +12,13 @@ abstract class MapState extends Equatable {
   final EditingMode editingMode;
   final Set<PointMarker> pointMarkers;
 
-  MapState({this.content, this.editingMode, this.pointMarkers});
+  MapState({this.content = '', this.editingMode = EditingMode.none, this.pointMarkers = const {}});
 }
 
 class MapLoaded extends MapState {
   MapLoaded({
-    String content,
-    EditingMode editingMode: EditingMode.none,
+    String content = '',
+    EditingMode editingMode = EditingMode.none,
     Set<PointMarker> pointMarkers = const {},
   }) : super(
           content: content,

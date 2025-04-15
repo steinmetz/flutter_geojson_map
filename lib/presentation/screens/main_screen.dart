@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_geojson_map/application/cubit/map/map_cubit.dart';
 import 'package:flutter_geojson_map/presentation/widgets/data_panel.dart';
@@ -7,6 +6,7 @@ import 'package:flutter_geojson_map/presentation/widgets/map_widget.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class MapScreen extends StatelessWidget {
+  const MapScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -17,26 +17,28 @@ class MapScreen extends StatelessWidget {
 }
 
 class MapScreenChild extends StatefulWidget {
-  MapScreenChild({Key key}) : super(key: key);
+  const MapScreenChild({Key? key = const Key("MapScreenChild")})
+      : super(key: key);
   @override
   _MyMapScreenState createState() => _MyMapScreenState();
 }
 
-class _MyMapScreenState extends State<MapScreenChild> {
+class _MyMapScreenState extends State<MapScreenChild> {  
+  _MyMapScreenState({this.editingMode = EditingMode.none});
+  EditingMode editingMode;
+
   Widget build(BuildContext context) {
-    return BlocBuilder<MapCubit, MapState>(
-      builder: (context, state) {
-        if (state is MapLoaded)
-          return Scaffold(
+    return BlocBuilder<MapCubit, MapState>(builder: (context, state) {
+        if (state is MapLoaded) return Scaffold(
             body: Row(
-              mainAxisSize: MainAxisSize.max,
+              mainAxisSize: MainAxisSize.max,              
               children: [
                 Expanded(flex: 3, child: _buildMapAndControllers(state)),
                 Expanded(flex: 1, child: DataPanel(content: state.content))
               ],
             ),
           );
-        return Container(); //not nice
+        return const SizedBox.shrink();//not nice
       },
     );
   }
@@ -55,15 +57,15 @@ class _MyMapScreenState extends State<MapScreenChild> {
     );
   }
 
-  void onMapTap(double latitude, double longitude) {    
-    context.read<MapCubit>().mapTap(latitude: latitude, longitude: longitude);
+  void onMapTap(double latitude, double longitude) {
+    context.read<MapCubit>().mapTap(latitude: latitude, longitude: longitude);   
   }
 }
 
 class ControllersWidgets extends StatelessWidget {
   final EditingMode editingMode;
-  const ControllersWidgets({Key key, this.editingMode}) : super(key: key);
-
+  const ControllersWidgets({Key? key, required this.editingMode}) : super(key: key);
+  
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -72,8 +74,8 @@ class ControllersWidgets extends StatelessWidget {
           backgroundColor:
               editingMode == EditingMode.point ? Colors.red : Colors.blue,
           onPressed: () => context.read<MapCubit>().editMode(EditingMode.point),
-          child: FaIcon(FontAwesomeIcons.mapMarker),
-        ),
+          child: FaIcon(FontAwesomeIcons.locationPin),
+        ), // here was mapMarker instead of location pin
         FloatingActionButton(
           backgroundColor:
               editingMode == EditingMode.polygon ? Colors.red : Colors.blue,
